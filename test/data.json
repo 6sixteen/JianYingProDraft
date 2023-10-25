@@ -1,0 +1,9 @@
+{
+  "name": "John",
+  "age": null,
+  "address": {
+    "street": "123 Main St",
+    "city": null,
+    "state": "CA"
+  }
+}
