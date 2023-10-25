@@ -2,7 +2,13 @@ import os
 import shutil
 import uuid
 import json
+from pathlib import Path
+import mimetypes  
 
+def judge_image_path(path:Path):
+    mimetype = mimetypes.guess_type(str(path))[0]  
+    return 'image' in mimetype.split('/')
+  
 def generate_id():
     """
         生成uuid

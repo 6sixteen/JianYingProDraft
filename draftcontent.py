@@ -1,8 +1,12 @@
 from dataclasses import dataclass,field
 from enum import Enum 
 from typing import List,Any,Dict,Optional
-from draft.util import generate_id
+from draft.util import generate_id,judge_image_path
 import platform
+from pathlib import Path 
+from PIL import Image  
+from copy import deepcopy
+
 
 class RatioType(Enum):
     ORIGINAL = "original" # 原始比例
@@ -75,6 +79,7 @@ class Canvas:
     source_platform:int = field(default=0)
     team_id:str = field(default="")
     type:str = field(default="canvas_color")
+
 @dataclass
 class SoundChannelMapping:
     audio_channel_mappings: int = field(default=0)
@@ -137,7 +142,7 @@ class Video:
     gameplay: Optional[str] = field(default=None)
     has_audio: bool = field(default=False)
     height:int = field(default=1080)
-    id: str = field(default_factory=generate_id) #track.segments[0].material_id append
+    id: str = field(default_factory=generate_id) #track.segments[].material_id append
     intensifies_audio_path: str = field(default="")
     intensifies_path:str = field(default="")
     is_ai_generate_content: bool = field(default=False)
@@ -244,6 +249,24 @@ class HdrSettings:
     nits:int = field(default=1000)
 
 @dataclass
+class ResponsiveLayout:
+    enable:bool = field(default=False)
+    horizontal_pos_layout:int = field(default=0)
+    size_layout:int = field(default=0)
+    target_follow:str = field(default="")
+    vertical_pos_layout:int = field(default=0)
+
+@dataclass
+class TimeRange:
+    start:int = field(default=0)
+    duration:int = field(default=0)
+
+@dataclass
+class UniformScale:
+    on:bool = field(default=True)
+    value:int = field(default=1)
+
+@dataclass
 class Segment:
     cartoon:bool = field(default=False)
     clip:Clip = field(default=Clip)
@@ -261,7 +284,22 @@ class Segment:
     is_tone_modify:bool = field(default=False)
     keyframe_refs:List[str] = field(default_factory=list)
     last_nonzero_volume:int = field(default=1)
-    
+    material_id:str = field(default="") # materials.videos[0].id
+    render_index:int = field(default=0)
+    responsive_layout: ResponsiveLayout = field(default_factory=ResponsiveLayout)
+    reverse:bool = field(default=False)
+    source_timerange:TimeRange = field(default_factory=TimeRange)
+    speed:float = field(default=1)
+    target_timerange:TimeRange = field(default_factory=TimeRange)
+    template_id:str = field(default="")
+    template_scene:str = field(default="")
+    track_attribute:int = field(default=0)
+    track_render_index:int = field(default=0)
+    uniform_scale:UniformScale = field(default_factory=UniformScale)
+    visible:bool = field(default=True)
+    volume:int = field(default=1)
+
+
 @dataclass
 class Track:
     attribute:int = field(default=0)
@@ -270,6 +308,9 @@ class Track:
     is_default_name:bool = field(default=True)
     name:str = field(default="")
     segments:List[Segment] = field(default_factory=list)
+    type:str = field(default="")
+
+
 @dataclass
 class DraftContent:
     canvas_config: CanvasConfig = field(default_factory=CanvasConfig)
@@ -296,4 +337,66 @@ class DraftContent:
     source: str = field(default="default")
     static_cover_image_path: str = field(default="")
     tracks: List[Track] = field(default_factory=list)
+    update_time:int = field(default=0)
+    version:int = field(default=0)
 
+    
+    def add_image2track(self, image_path:Path,duration:int=5000000,track_index:int=0):
+        """
+        Add an image to a track.
+        Args:
+            image_path (Path): The path to the image file.
+            track_index (int): The index of the track to add the image to.
+        Raises:
+            FileNotFoundError: If the image_path is not a valid image file or if the image file does not exist.
+        """
+
+        image_name = image_path.name
+        if not judge_image_path(image_path):
+            raise FileNotFoundError("This path is not an image file")
+        if not image_path.exists():
+            raise FileNotFoundError("no image")
+        img = Image.open(image_path) 
+        w, h = img.size  
+
+        #deepcopy for error
+        copy_draft = deepcopy(self)
+        #materials.canvas
+        canvases = copy_draft.materials.canvases
+        canvas = Canvas()
+        canvases.append(canvas)  
+
+        sound_channel_mappings = copy_draft.materials.sound_channel_mappings
+        sound_channel_mapping = SoundChannelMapping() 
+        sound_channel_mappings.append(sound_channel_mapping)
+
+        speeds = copy_draft.materials.speeds
+        speed = Speed()
+        speeds.append(speed)
+
+        videos = copy_draft.materials.videos
+        video = Video(material_name=image_name,path=image_path,type='photo',height=h,weight=w) 
+        videos.append(video)
+
+        vocal_separations = copy_draft.materials.vocal_separations
+        vocal_speration = VocalSeparation() 
+        vocal_separations.append(vocal_speration)
+
+        #track 
+        tracks = copy_draft.tracks
+        if len(tracks) == 0:
+            #init track
+            track = Track()
+            tracks.append(track)
+        if track_index > len(tracks) -1:
+            raise ValueError("track index out of range")
+        
+        #Each Image for Each Segment
+        track = tracks[track_index]
+        segment = Segment()
+        if len(track) == 0:
+            source_timerange = TimeRange(start=0)
+        segment.extra_material_refs.append(speed.id)
+        segment.extra_material_refs.append(canvas.id)
+        segment.extra_material_refs.append(sound_channel_mapping.id)
+        segment.extra_material_refs.append(vocal_speration.id)
