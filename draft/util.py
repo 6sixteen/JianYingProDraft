@@ -4,11 +4,15 @@ import uuid
 import json
 from pathlib import Path
 import mimetypes  
+import platform
 
 def judge_image_path(path:Path):
     mimetype = mimetypes.guess_type(str(path))[0]  
     return 'image' in mimetype.split('/')
-  
+
+def get_system():
+    sys:str = platform.system()
+    return sys.lower()
 def generate_id():
     """
         生成uuid

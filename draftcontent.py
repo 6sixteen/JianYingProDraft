@@ -1,7 +1,7 @@
 from dataclasses import dataclass,field
 from enum import Enum 
 from typing import List,Any,Dict,Optional
-from draft.util import generate_id,judge_image_path
+from draft.util import generate_id,get_system
 import platform
 from pathlib import Path 
 from PIL import Image  
@@ -28,7 +28,7 @@ class Config:
     adjust_max_index: int = field(default=1) 
     attachment_info: list = field(default_factory=list)
     combination_max_index: int = field(default=1)
-    export_range: list = field(default_factory=list)
+    export_range: Optional[str] = field(default=None)
     extract_audio_last_index: int = field(default=1)
     lyrics_recognition_id: str = field(default="")
     lyrics_sync: bool = field(default=True)
@@ -43,12 +43,12 @@ class Config:
     subtitle_taskinfo: list = field(default_factory=list)
     system_font_list: list = field(default_factory=list)
     video_mute: bool = field(default=False)
-    zoom_info_params: dict = field(default_factory=dict)
+    zoom_info_params: Optional[str] = field(default=None)
 
 @dataclass
 class KeyFrames:
     adjusts: List[Any] = field(default_factory=list)
-    audio: List[Any] = field(default_factory=list)
+    audios: List[Any] = field(default_factory=list)
     effects: List[Any] = field(default_factory=list)
     filters: List[Any] = field(default_factory=list)
     handwrites: List[Any] = field(default_factory=list)
@@ -58,14 +58,14 @@ class KeyFrames:
 
 @dataclass
 class Platform:
-    app_id: str = field(default="3704")
+    app_id: int = field(default=3704)
     app_source: str = field(default="lv")
     app_version: str = field(default="4.6.1")
     device_id: str = field(default="0aa41cb15b0a6068e4dd4c1388c7fdfb")
     hard_disk_id: str = field(default="3a0aa421529f1838aff80c80410d602a")
     mac_address: str = field(default="522c331216c24ff306ee05239b2ab7c7")
-    os: str = field(default_factory=platform.system)
-    os_version: str = field(default=platform.version)
+    os: str = field(default_factory=get_system)
+    os_version: str = field(default_factory=platform.version)
 
 @dataclass
 class Canvas:
@@ -82,7 +82,7 @@ class Canvas:
 
 @dataclass
 class SoundChannelMapping:
-    audio_channel_mappings: int = field(default=0)
+    audio_channel_mapping: int = field(default=0)
     id: str = field(default_factory=generate_id) #track.segments[0].extra_material_refs append
     is_config_open: bool = field(default=False)
     type:str = field(default="")
@@ -158,11 +158,11 @@ class Video:
     origin_material_id: str = field(default="")
     path:str = field(default="") #image path
     picture_from: str = field(default="none")
-    picture_set_category_id = field(default="")
-    picture_set_category_name = field(default="")
+    picture_set_category_id:str = field(default="")
+    picture_set_category_name:str = field(default="")
     request_id: str = field(default="")
-    reverse_intensifies_path = field(default="")
-    reverse_path = field(default="")
+    reverse_intensifies_path:str = field(default="")
+    reverse_path:str = field(default="")
     smart_motion: Optional[str] = field(default=None)
     source: int = field(default=0)
     source_platform: int = field(default=0)
@@ -205,6 +205,8 @@ class Materials:
     material_animations: List[Any] = field(default_factory=list)
     material_colors: List[Any] = field(default_factory=list)
     placeholders: List[Any] = field(default_factory=list)
+    plugin_effects: List[Any] = field(default_factory=list)
+    primary_color_wheels: List[Any] = field(default_factory=list)
     realtime_denoises: List[Any] = field(default_factory=list)
     shapes: List[Any] = field(default_factory=list)
     smart_crops: List[Any] = field(default_factory=list)
@@ -212,10 +214,11 @@ class Materials:
     speeds:List[Speed] = field(default_factory=list)
     stickers: List[Any] = field(default_factory=list)
     tail_leaders: List[Any] = field(default_factory=list)
-    text_template: List[Any] = field(default_factory=list)
+    text_templates: List[Any] = field(default_factory=list)
     texts: List[Any] = field(default_factory=list)
     transitions: List[Any] = field(default_factory=list)
     video_effects: List[Any] = field(default_factory=list)
+    video_trackings: List[Any] = field(default_factory=list)
     videos: List[Video] = field(default_factory=list)
     vocal_separations: List[VocalSeparation] = field(default_factory=list)
 
@@ -240,7 +243,7 @@ class Clip:
     flip:Flip = field(default_factory=Flip)
     rotation:int = field(default=0)
     scale:Scale = field(default_factory=Scale)
-    Transform:Transform = field(default_factory=Transform)
+    transform:Transform = field(default_factory=Transform)
 
 @dataclass
 class HdrSettings:
@@ -269,8 +272,9 @@ class UniformScale:
 @dataclass
 class Segment:
     cartoon:bool = field(default=False)
-    clip:Clip = field(default=Clip)
+    clip:Clip = field(default_factory=Clip)
     common_keyframes:List = field(default_factory=list)
+    enable_adjust:bool = field(default=True)
     enable_color_curves:bool = field(default=True)
     enable_color_wheels:bool = field(default=True)
     enable_lut:bool = field(default=True)
@@ -292,7 +296,7 @@ class Segment:
     speed:float = field(default=1)
     target_timerange:TimeRange = field(default_factory=TimeRange)
     template_id:str = field(default="")
-    template_scene:str = field(default="")
+    template_scene:str = field(default="default")
     track_attribute:int = field(default=0)
     track_render_index:int = field(default=0)
     uniform_scale:UniformScale = field(default_factory=UniformScale)
@@ -308,7 +312,7 @@ class Track:
     is_default_name:bool = field(default=True)
     name:str = field(default="")
     segments:List[Segment] = field(default_factory=list)
-    type:str = field(default="")
+    type:str = field(default="video")
 
 
 @dataclass
@@ -316,12 +320,13 @@ class DraftContent:
     canvas_config: CanvasConfig = field(default_factory=CanvasConfig)
     color_space: ColorSpace = field(default=ColorSpace.SDR)
     config: Config = field(default_factory=Config)
-    cover: str = field(default="")
+    cover: Optional[str] = field(default=None)
     create_time: int = field(default=0)
     duration: int = field(default=0) # /1000000 -> second
-    extra_info: str = field(default="")
+    extra_info: Optional[str] = field(default=None)
     fps: int = field(default=30) 
     free_render_index_mode_on: bool = field(default=False)
+    group_container: Optional[str] = field(default=None)
     id: str = field(default_factory=generate_id) # project id
     keyframe_graph_list: list = field(default_factory=list)
     keyframes: KeyFrames = field(default_factory=KeyFrames)
@@ -329,74 +334,16 @@ class DraftContent:
     materials: Materials = field(default_factory=Materials)
     mutable_config: Optional[str] = field(default=None)
     name: str = field(default="")
-    path: str = field(default="83.0.0")
+    new_version: str = field(default="83.0.0")
     platform: Platform = field(default_factory=Platform)
-    relationships: List = field(default_factory=list)
+    relationships: list = field(default_factory=list)
     render_index_track_mode_on: bool = field(default=False)
     retouch_cover: Optional[str] = field(default=None)
     source: str = field(default="default")
     static_cover_image_path: str = field(default="")
     tracks: List[Track] = field(default_factory=list)
     update_time:int = field(default=0)
-    version:int = field(default=0)
+    version:int = field(default=360000)
 
-    
-    def add_image2track(self, image_path:Path,duration:int=5000000,track_index:int=0):
-        """
-        Add an image to a track.
-        Args:
-            image_path (Path): The path to the image file.
-            track_index (int): The index of the track to add the image to.
-        Raises:
-            FileNotFoundError: If the image_path is not a valid image file or if the image file does not exist.
-        """
 
-        image_name = image_path.name
-        if not judge_image_path(image_path):
-            raise FileNotFoundError("This path is not an image file")
-        if not image_path.exists():
-            raise FileNotFoundError("no image")
-        img = Image.open(image_path) 
-        w, h = img.size  
-
-        #deepcopy for error
-        copy_draft = deepcopy(self)
-        #materials.canvas
-        canvases = copy_draft.materials.canvases
-        canvas = Canvas()
-        canvases.append(canvas)  
-
-        sound_channel_mappings = copy_draft.materials.sound_channel_mappings
-        sound_channel_mapping = SoundChannelMapping() 
-        sound_channel_mappings.append(sound_channel_mapping)
-
-        speeds = copy_draft.materials.speeds
-        speed = Speed()
-        speeds.append(speed)
-
-        videos = copy_draft.materials.videos
-        video = Video(material_name=image_name,path=image_path,type='photo',height=h,weight=w) 
-        videos.append(video)
-
-        vocal_separations = copy_draft.materials.vocal_separations
-        vocal_speration = VocalSeparation() 
-        vocal_separations.append(vocal_speration)
-
-        #track 
-        tracks = copy_draft.tracks
-        if len(tracks) == 0:
-            #init track
-            track = Track()
-            tracks.append(track)
-        if track_index > len(tracks) -1:
-            raise ValueError("track index out of range")
-        
-        #Each Image for Each Segment
-        track = tracks[track_index]
-        segment = Segment()
-        if len(track) == 0:
-            source_timerange = TimeRange(start=0)
-        segment.extra_material_refs.append(speed.id)
-        segment.extra_material_refs.append(canvas.id)
-        segment.extra_material_refs.append(sound_channel_mapping.id)
-        segment.extra_material_refs.append(vocal_speration.id)
+   
