@@ -69,7 +69,15 @@ class DraftOperation:
         # If new_duration is greater than old_duration, update the DraftContent's duration
         if new_duration > old_duration:
             draft_content.duration = new_duration
- 
+    
+    @classmethod
+    def __get__track_index(self,tracks:List[Track],type:TrackType):
+        index = -1
+        for i,track in enumerate(tracks):
+            if track.type == type:
+                return i
+        return index
+    
     @classmethod
     def write2json(self,draft_content:DraftContent,json_path:Path):
         class EnumEncoder(json.JSONEncoder):
@@ -125,8 +133,8 @@ class DraftOperation:
         videos.append(video)
 
         vocal_separations = copy_draft.materials.vocal_separations
-        vocal_speration = VocalSeparation() 
-        vocal_separations.append(vocal_speration)
+        vocal_separation = VocalSeparation() 
+        vocal_separations.append(vocal_separation)
 
         #track 
         tracks = copy_draft.tracks
@@ -134,7 +142,8 @@ class DraftOperation:
             #init track or add new track
             track = Track()
             tracks.append(track)
-        if track_index > len(tracks) -2:
+        
+        if track_index > len(tracks):
             raise ValueError("track index out of range")
         
         #Each Image for Each Segment
@@ -156,7 +165,7 @@ class DraftOperation:
         segment.extra_material_refs.append(speed.id)
         segment.extra_material_refs.append(canvas.id)
         segment.extra_material_refs.append(sound_channel_mapping.id)
-        segment.extra_material_refs.append(vocal_speration.id)  
+        segment.extra_material_refs.append(vocal_separation.id)  
         segment.material_id = video.id
         segments.append(segment)
 
@@ -164,4 +173,67 @@ class DraftOperation:
 
         return copy_draft
         
+    @classmethod
+    def add_audio2track(self,draft_content:DraftContent,audio_path:Path):
+
+        copy_draft_content = deepcopy(draft_content)
+        materials = copy_draft_content.materials
+        audios = materials.audios
+        audio_name = audio_path.name
+        audio = Audio(audio_name = audio_name,
+                      audio_path = audio_path) #segments[].material_id
+        audios.append(audio)
+
+        beats = materials.beats
+        beat = Beat()
+        beats.append(beat)
+
+        sound_channel_mappings = materials.sound_channel_mappings
+        sound_channel_mapping = SoundChannelMapping()
+        sound_channel_mappings.append(sound_channel_mapping)
+
+        speeds = materials.speeds
+        speed = Speed()
+        speeds.append(speed)
+
+        vocal_separations = materials.vocal_separations
+        vocal_separation = VocalSeparation()
+        vocal_separations.append(vocal_separation)
+
+        tracks = copy_draft_content.tracks
+        if len(tracks) == 0:
+            video_track = Track()
+            audio_track = Track(type=TrackType.AUDIO)
+            tracks.append(video_track)
         
+        #find video track 
+        audio_track_index = self.__get__track_index(tracks,TrackType.AUDIO)
+        audio_track = tracks[audio_track_index]
+        segments = audio_track.segments
+        segment = Segment(clip=None,
+                          enable_adjust=False,
+                          enable_lut=False)
+        if len(segments) == 0:
+            source_timerange = TimeRange(start=0,duration=duration)
+            target_timerange = TimeRange(start=0,duration=duration)
+            segment.source_timerange = source_timerange
+            segment.target_timerange = target_timerange
+        else:
+            total_duration = self.__get_track_duration(audio_track)
+            source_timerange = TimeRange(start=0,duration=duration)
+            target_timerange = TimeRange(start=total_duration,duration=duration)
+            segment.source_timerange = source_timerange
+            segment.target_timerange = target_timerange
+
+        extra_material_refs = segment.extra_material_refs
+        extra_material_refs.append(speed.id)
+        extra_material_refs.append(beat.id)
+        extra_material_refs.append(sound_channel_mapping.id)
+        extra_material_refs.append(vocal_separation.id)  
+        segment.material_id = audio.id
+        segments.append(segment)
+
+        #update duration
+        self.__update_duration(draft_content=copy_draft_content)
+
+        return copy_draft

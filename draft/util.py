@@ -5,7 +5,15 @@ import json
 from pathlib import Path
 import mimetypes  
 import platform
+from time import time
 
+def get_time():
+    t = time()
+    return int(t)
+
+def get_time_ms():
+    t = time() * 1000000
+    return int(t)
 def judge_image_path(path:Path):
     mimetype = mimetypes.guess_type(str(path))[0]  
     return 'image' in mimetype.split('/')

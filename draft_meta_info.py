@@ -1,6 +1,7 @@
 from dataclasses import dataclass,field
 from typing import List,Any,Optional
-from draft.util import generate_id
+from draft.util import generate_id,get_time,get_time_ms
+
 @dataclass
 class DraftEnterPriseInfo:
     draft_enterprise_extra: str = field(default="")
@@ -26,6 +27,30 @@ def create_draft_materials():
     draft_materials.append(draft_material_3)
     draft_materials.append(draft_material_6)
     return draft_materials
+
+@dataclass
+class TimeRange:
+    duration:int = -1
+    start:int = -1
+
+#photo
+@dataclass
+class DraftMaterialType0:
+    create_time:float = field(default_factory=get_time)
+    duration:int = 5000000 #
+    extra_info:str = "" #file name
+    file_path:str = "" #
+    height:int =0 #h
+    id:str = field(default_factory=generate_id)
+    import_time:float = field(default_factory=get_time)
+    import_time_ms:float = field(default_factory=get_time_ms)
+    item_source:int = 1
+    md5:str = ""
+    metetype:str = "photo"
+    roughcut_time_range:TimeRange = field(default_factory=TimeRange)
+    sub_time_range:TimeRange = field(default_factory=TimeRange)
+    type:int = 0
+    width:int = 0 #w
 
 @dataclass
 class DraftMetaInfo:

@@ -28,12 +28,12 @@
   },
   "cover": null,
   "create_time": 0,
-  "duration": 5000000,
+  "duration": 10000000,
   "extra_info": null,
   "fps": 30,
   "free_render_index_mode_on": false,
   "group_container": null,
-  "id": "56C7AED0-B66B-43CE-A15B-FD155B0E1B51",
+  "id": "04A82714-2FED-491D-BEBF-55309B63BC0F",
   "keyframe_graph_list": [],
   "keyframes": {
     "adjusts": [],
@@ -66,7 +66,19 @@
         "album_image": "",
         "blur": 0,
         "color": "",
-        "id": "8293F01D-23DD-4337-8A73-B78A8D7D750A",
+        "id": "555C24C3-6936-4B1E-8CFB-24A6BB3668B3",
+        "image": "",
+        "image_id": "",
+        "image_name": "",
+        "source_platform": 0,
+        "team_id": "",
+        "type": "canvas_color"
+      },
+      {
+        "album_image": "",
+        "blur": 0,
+        "color": "",
+        "id": "4877B92D-8819-46ED-B3F4-DA69BE0B1390",
         "image": "",
         "image_id": "",
         "image_name": "",
@@ -100,7 +112,13 @@
     "sound_channel_mappings": [
       {
         "audio_channel_mapping": 0,
-        "id": "AB573D3F-DF7E-45DE-AB48-DAACD6C2FAF0",
+        "id": "7B52161A-17FE-4599-AA2B-256907A8B063",
+        "is_config_open": false,
+        "type": ""
+      },
+      {
+        "audio_channel_mapping": 0,
+        "id": "C0832650-3BAF-41BF-890F-4E3B45D48287",
         "is_config_open": false,
         "type": ""
       }
@@ -108,7 +126,14 @@
     "speeds": [
       {
         "curve_speed": null,
-        "id": "F2192B02-8B74-478E-9486-298F2B54CC1D",
+        "id": "ADE7A712-F2C4-4F00-9FBC-E5814DDD0DDE",
+        "mode": 0,
+        "speed": 1.0,
+        "type": "speed"
+      },
+      {
+        "curve_speed": null,
+        "id": "714349D9-5EED-4816-A4C9-4B3800166DFA",
         "mode": 0,
         "speed": 1.0,
         "type": "speed"
@@ -148,7 +173,7 @@
         "gameplay": null,
         "has_audio": false,
         "height": 1080,
-        "id": "792D6DAD-948F-41B1-9838-BE615CB2C881",
+        "id": "77F912E1-0A68-4705-81E1-6574AD06DEB1",
         "intensifies_audio_path": "",
         "intensifies_path": "",
         "is_ai_generate_content": false,
@@ -192,12 +217,90 @@
           "time_range": null
         },
         "width": 1440
+      },
+      {
+        "aigc_type": "none",
+        "audio_fade": null,
+        "cartoon_path": "",
+        "category_id": "",
+        "category_name": "local",
+        "check_flag": 63487,
+        "crop": {
+          "lower_left_x": 0,
+          "lower_left_y": 1,
+          "lower_right_x": 1,
+          "lower_right_y": 1,
+          "upper_left_x": 0,
+          "upper_left_y": 0,
+          "upper_right_x": 1,
+          "upper_right_y": 0
+        },
+        "crop_ratio": "free",
+        "crop_scale": 1.0,
+        "duration": 10800000000,
+        "extra_type_option": 0,
+        "formula_id": "",
+        "freeze": null,
+        "gameplay": null,
+        "has_audio": false,
+        "height": 1080,
+        "id": "2024BFF8-014A-4BB4-A63C-B35F16A65A31",
+        "intensifies_audio_path": "",
+        "intensifies_path": "",
+        "is_ai_generate_content": false,
+        "is_unified_beauty_mode": false,
+        "local_id": "",
+        "local_material_id": "",
+        "material_id": "",
+        "material_name": "output_002.jpg",
+        "material_url": "",
+        "matting": {
+          "flag": 0,
+          "has_use_quick_brush": false,
+          "has_use_quick_eraser": false,
+          "interactiveTime": [],
+          "path": "",
+          "strokes": []
+        },
+        "media_path": "",
+        "object_locked": null,
+        "origin_material_id": "",
+        "path": "D:\\PersonalProjects\\Moody Blues Project old\\Moody Blues\\temp\\imgs\\test-generate-prompt\\output_002.jpg",
+        "picture_from": "none",
+        "picture_set_category_id": "",
+        "picture_set_category_name": "",
+        "request_id": "",
+        "reverse_intensifies_path": "",
+        "reverse_path": "",
+        "smart_motion": null,
+        "source": 0,
+        "source_platform": 0,
+        "stable": null,
+        "team_id": "",
+        "type": "photo",
+        "video_algorithm": {
+          "algorithms": [],
+          "deflicker": null,
+          "motion_blur_config": null,
+          "noise_reduction": null,
+          "path": "",
+          "quality_enhance": null,
+          "time_range": null
+        },
+        "width": 1440
       }
     ],
     "vocal_separations": [
       {
         "choice": 0,
-        "id": "9EAC5853-CD77-43FD-9266-F9051DB6C3AD",
+        "id": "ACB315C2-0C65-447F-A3BD-721BEB64490C",
+        "production_path": "",
+        "time_range": null,
+        "type": "vocal_separation"
+      },
+      {
+        "choice": 0,
+        "id": "DC2989EC-8D27-459C-80D9-AB43B935AF43",
         "production_path": "",
         "time_range": null,
         "type": "vocal_separation"
@@ -226,7 +329,7 @@
     {
       "attribute": 0,
       "flag": 0,
-      "id": "C449ADC2-77E8-465B-8860-1245730C2292",
+      "id": "9B5B61F3-8551-496D-ACFA-A46322163D94",
       "is_default_name": true,
       "name": "",
       "segments": [
@@ -253,12 +356,12 @@
           "enable_color_curves": true,
           "enable_color_wheels": true,
           "enable_lut": true,
-          "enable_smart_color_adjust": true,
+          "enable_smart_color_adjust": false,
           "extra_material_refs": [
-            "F2192B02-8B74-478E-9486-298F2B54CC1D",
-            "8293F01D-23DD-4337-8A73-B78A8D7D750A",
-            "AB573D3F-DF7E-45DE-AB48-DAACD6C2FAF0",
-            "9EAC5853-CD77-43FD-9266-F9051DB6C3AD"
+            "ADE7A712-F2C4-4F00-9FBC-E5814DDD0DDE",
+            "555C24C3-6936-4B1E-8CFB-24A6BB3668B3",
+            "7B52161A-17FE-4599-AA2B-256907A8B063",
+            "ACB315C2-0C65-447F-A3BD-721BEB64490C"
           ],
           "group_id": "",
           "hdr_settings": {
@@ -266,13 +369,13 @@
             "mode": 1,
             "nits": 1000
           },
-          "id": "DA8F71FF-5C05-48D4-930F-48E7D3CE7FC7",
+          "id": "DFE4772A-60E1-4672-B3B8-36B1AABBD7C8",
           "intensifies_audio": false,
           "is_placeholder": false,
           "is_tone_modify": false,
           "keyframe_refs": [],
           "last_nonzero_volume": 1,
-          "material_id": "792D6DAD-948F-41B1-9838-BE615CB2C881",
+          "material_id": "77F912E1-0A68-4705-81E1-6574AD06DEB1",
           "render_index": 0,
           "responsive_layout": {
             "enable": false,
@@ -289,6 +392,78 @@
           "speed": 1,
           "target_timerange": {
             "start": 0,
+            "duration": 5000000
+          },
+          "template_id": "",
+          "template_scene": "default",
+          "track_attribute": 0,
+          "track_render_index": 0,
+          "uniform_scale": {
+            "on": true,
+            "value": 1
+          },
+          "visible": true,
+          "volume": 1
+        },
+        {
+          "cartoon": false,
+          "clip": {
+            "alpha": 1,
+            "flip": {
+              "horizontal": false,
+              "vertical": false
+            },
+            "rotation": 0,
+            "scale": {
+              "x": 1,
+              "y": 1
+            },
+            "transform": {
+              "x": 0,
+              "y": 0
+            }
+          },
+          "common_keyframes": [],
+          "enable_adjust": true,
+          "enable_color_curves": true,
+          "enable_color_wheels": true,
+          "enable_lut": true,
+          "enable_smart_color_adjust": false,
+          "extra_material_refs": [
+            "714349D9-5EED-4816-A4C9-4B3800166DFA",
+            "4877B92D-8819-46ED-B3F4-DA69BE0B1390",
+            "C0832650-3BAF-41BF-890F-4E3B45D48287",
+            "DC2989EC-8D27-459C-80D9-AB43B935AF43"
+          ],
+          "group_id": "",
+          "hdr_settings": {
+            "intensity": 1,
+            "mode": 1,
+            "nits": 1000
+          },
+          "id": "36B8C7AE-B2C0-4486-B207-6CA33505EA46",
+          "intensifies_audio": false,
+          "is_placeholder": false,
+          "is_tone_modify": false,
+          "keyframe_refs": [],
+          "last_nonzero_volume": 1,
+          "material_id": "2024BFF8-014A-4BB4-A63C-B35F16A65A31",
+          "render_index": 0,
+          "responsive_layout": {
+            "enable": false,
+            "horizontal_pos_layout": 0,
+            "size_layout": 0,
+            "target_follow": "",
+            "vertical_pos_layout": 0
+          },
+          "reverse": false,
+          "source_timerange": {
+            "start": 0,
+            "duration": 5000000
+          },
+          "speed": 1,
+          "target_timerange": {
+            "start": 5000000,
             "duration": 5000000
           },
           "template_id": "",

@@ -17,6 +17,10 @@ class ColorSpace(Enum):
     HDR_HLG = 1 # maybe 1, special monitor support
     HDR_PQ = 2 # 2，special monitor support
 
+class TrackType(Enum):
+    VIDEO = "video"
+    AUDIO = "audio"
+
 @dataclass
 class CanvasConfig:
     height: int = field(default=1080)
@@ -181,12 +185,68 @@ class VocalSeparation:
     type:str = field(default="vocal_separation")
 
 @dataclass
+class Audio:
+    app_id:int = 0
+    category_id:str = ""
+    category_name:str = "local"
+    check_flag: 1  
+    duration:int = 0 #duration
+    effect_id:str =  ""  
+    formula_id:str = ""
+    id:str = field(default_factory=generate_id) #segments[].material_id
+    intensifies_path:str = ""  
+    local_material_id:str = field(default_factory=generate_id) #meta_info.draft_materials.value][0].id
+    music_id:str = field(default_factory=generate_id) 
+    name:str = "" #name  
+    path:str = "" #D:/JianyingPro Drafts/temp/speaker_test_sound.mp3  
+    query:str = ""  
+    request_id:str = ""
+    resource_id:str = ""
+    search_id:str = "" 
+    source_platform:int = 0  
+    team_id:str = ""
+    text_id:str = ""
+    tone_category_id:str = ""
+    tone_category_name:str = ""
+    tone_effect_id:str = ""
+    tone_effect_name:str = ""  
+    tone_speaker:str = ""
+    tone_type:str = "" 
+    type:str = "extract_music"
+    video_id:str = ""
+    wave_points:list = field(default_factory=list)
+
+def create_melody_percents():
+    return [0]
+
+@dataclass
+class AiBeats:
+    beat_speed_infos:list = field(default_factory=list)
+    beats_path:str = ""
+    beats_url:str = ""
+    melody_path:str = ""
+    melody_percents:list = field(default_factory=create_melody_percents)
+    melody_url:str = ""
+
+@dataclass
+class Beat:
+    ai_beats:AiBeats = field(default_factory=AiBeats)
+    enable_ai_beats:bool = field(default=False)
+    gear:int = 404
+    gear_count:int = 0
+    id:str = field(default_factory=generate_id) #segments[].extra_material_refs append
+    mode:int = 404
+    type:str = "beats"
+    user_beats:list = field(default_factory=list)
+    user_delete_ai_beats:Optional[str] = field(default=None)
+
+@dataclass
 class Materials:
     audio_balances: List[Any] = field(default_factory=list)
     audio_effects: List[Any] = field(default_factory=list)
     audio_fades: List[Any] = field(default_factory=list)
-    audios: List[Any] = field(default_factory=list)
-    beats: List[Any] = field(default_factory=list)
+    audios: List[Audio]= field(default_factory=list)
+    beats:List[Beat] = field(default_factory=list)
     canvases: List[Canvas] = field(default_factory=list)
     chromas:List[Any] = field(default_factory=list)
     color_curves: List[Any] = field(default_factory=list)
@@ -278,7 +338,7 @@ class Segment:
     enable_color_curves:bool = field(default=True)
     enable_color_wheels:bool = field(default=True)
     enable_lut:bool = field(default=True)
-    enable_smart_color_adjust:bool = field(default=True)
+    enable_smart_color_adjust:bool = field(default=False)
     extra_material_refs:List[str] = field(default_factory=list)
     group_id:str = field(default="")
     hdr_settings:HdrSettings = field(default_factory=HdrSettings)
@@ -312,7 +372,7 @@ class Track:
     is_default_name:bool = field(default=True)
     name:str = field(default="")
     segments:List[Segment] = field(default_factory=list)
-    type:str = field(default="video")
+    type:TrackType = field(default=TrackType.VIDEO)
 
 
 @dataclass

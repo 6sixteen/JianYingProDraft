@@ -1,0 +1,88 @@
+{
+  "draft_cloud_capcut_purchase_info": "",
+  "draft_cloud_last_action_download": false,
+  "draft_cloud_materials": [],
+  "draft_cloud_purchase_info": "",
+  "draft_cloud_template_id": "",
+  "draft_cloud_tutorial_info": "",
+  "draft_cloud_videocut_purchase_info": "",
+  "draft_cover": "draft_cover.jpg",
+  "draft_deeplink_url": "",
+  "draft_enterprise_info": {
+    "draft_enterprise_extra": "",
+    "draft_enterprise_id": "",
+    "draft_enterprise_name": "",
+    "enterprise_material": []
+  },
+  "draft_fold_path": "D:/JianyingPro Drafts/empty_project-副本",
+  "draft_id": "29E19FF6-EA79-4b28-AB25-ACEEF8628271",
+  "draft_is_article_video_draft": false,
+  "draft_is_from_deeplink": "false",
+  "draft_materials": [
+    {
+      "type": 0,
+      "value": [
+        {
+          "create_time": 1698386584,
+          "duration": 6624000,
+          "extra_info": "speaker_test_sound.mp3",
+          "file_Path": "D:/JianyingPro Drafts/temp/speaker_test_sound.mp3",
+          "height": 0,
+          "id": "cb968058-2da8-4065-90d9-a9e5583ea5df",
+          "import_time": 1698386603,
+          "import_time_ms": 1698386602910473,
+          "item_source": 1,
+          "md5": "",
+          "metetype": "music",
+          "roughcut_time_range": {
+            "duration": 6624000,
+            "start": 0
+          },
+          "sub_time_range": {
+            "duration": -1,
+            "start": -1
+          },
+          "type": 0,
+          "width": 0
+        }
+      ]
+    },
+    {
+      "type": 1,
+      "value": []
+    },
+    {
+      "type": 2,
+      "value": []
+    },
+    {
+      "type": 3,
+      "value": []
+    },
+    {
+      "type": 6,
+      "value": []
+    },
+    {
+      "type": 7,
+      "value": []
+    },
+    {
+      "type": 8,
+      "value": []
+    }
+  ],
+  "draft_materials_copied_info": [],
+  "draft_name": "empty_project-副本",
+  "draft_new_version": "",
+  "draft_removable_storage_device": "D:",
+  "draft_root_path": "D:/JianyingPro Drafts",
+  "draft_segment_extra_info": [],
+  "draft_timeline_materials_size_": 17031,
+  "tm_draft_cloud_completed": "",
+  "tm_draft_cloud_modified": 0,
+  "tm_draft_create": 1698386480128808,
+  "tm_draft_modified": 1698386614857437,
+  "tm_draft_removed": 7592,
+  "tm_duration": 6633333
+}
