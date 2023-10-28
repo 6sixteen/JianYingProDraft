@@ -33,7 +33,7 @@ class TimeRange:
     duration:int = -1
     start:int = -1
 
-#photo
+#photo audio
 @dataclass
 class DraftMaterialType0:
     create_time:float = field(default_factory=get_time)

@@ -3,12 +3,15 @@
 
 
 from pydub import AudioSegment  
-  
+from pathlib import Path
+
 def get_mp3_duration(file_path):  
     audio = AudioSegment.from_file(file_path, format="mp3")  
     duration = audio.duration_seconds  
-    return duration  
-  
-file_path = "path/to/your/mp3/file.mp3"  
-duration = get_mp3_duration(file_path)  
+    return duration 
+
+temp_path = Path(__file__).resolve().parent / "temp"
+file_path = temp_path / "speaker_test_sound.mp3"
+print(file_path)
+duration = get_mp3_duration(str(file_path))
 print("Duration:", duration, "seconds")

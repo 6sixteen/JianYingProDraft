@@ -33,7 +33,14 @@ def test_add_two_image2track():
     json_path = temp_path / "two_image2track.json"
     DraftOperation.write2json(draft_content, json_path)
 
+def test_add_audio2track():
+    draft_content = DraftContent()
+    audio_path = Path("D:\PersonalProjects\JianYingProDraft\\test\\temp\speaker_test_sound.mp3")
+    draft_content = DraftOperation.add_audio2track(draft_content, audio_path)
+    json_path = temp_path / "my_one_audio_draft_content.json"
+    DraftOperation.write2json(draft_content, json_path)
 if __name__ == "__main__":
     # test_dict()
     # test_add_first_image2track()
-    test_add_two_image2track()
+    # test_add_two_image2track()
+    test_add_audio2track()

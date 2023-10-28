@@ -6,6 +6,31 @@ from pathlib import Path
 import mimetypes  
 import platform
 from time import time
+from pydub import AudioSegment  
+from typing import Union
+
+def get_mp3_duration(file_path: Union[str, Path], base: int = 1000000) -> int:
+    """
+    Calculate the duration of an MP3 file.
+
+    Args:
+        file_path (Union[str, Path]): The path to the MP3 file.
+        base (int): The base to multiply the duration by. Default is 1000000.
+
+    Returns:
+        int: The duration of the MP3 file multiplied by the base.
+    """
+    # Convert file_path to string if it's a Path object
+    file_path = str(file_path)
+
+    # Load the audio segment from the file
+    audio = AudioSegment.from_file(file_path, format="mp3")
+
+    # Get the duration in seconds
+    duration = audio.duration_seconds
+
+    # Return the duration multiplied by the base
+    return int(duration * base)
 
 def get_time():
     t = time()

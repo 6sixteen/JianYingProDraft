@@ -42,6 +42,16 @@ def test_add_2img():
     json_path = temp_path / "my_two_image_draft_meta_info.json"
     DraftMetaInfoOperation.write2json(draft_meta_info, json_path)
 
+def test_add_first_audio():
+    draft_meta_info = DraftMetaInfo(draft_fold_path="D:/JianyingPro Drafts/my_one_audio",
+        draft_name="my_one_audio",
+        draft_removable_storage_device="D:",
+        draft_root_path="D:\\JianyingPro Drafts",)
+    audio_path = Path("D:\PersonalProjects\JianYingProDraft\\test\\temp\speaker_test_sound.mp3")
+    draft_meta_info,_ = DraftMetaInfoOperation.add_audio(draft_meta_info,audio_path)
+    json_path = temp_path / "my_one_audio_draft_meta_info.json"
+    DraftMetaInfoOperation.write2json(draft_meta_info, json_path)
+
 def make_dir(dir_path):
     draft_root_path="D:\\JianyingPro Drafts"
     draft_fold_path="D:/JianyingPro Drafts/10月25日"
@@ -49,4 +59,5 @@ def make_dir(dir_path):
 if __name__ == "__main__":
     # test_write_json()
     # test_add_img()
-    test_add_2img()
+    # test_add_2img()
+    test_add_first_audio()

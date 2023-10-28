@@ -1,6 +1,6 @@
 from copy import deepcopy
 from pathlib import Path 
-from draft.util import generate_id,judge_image_path
+from draft.util import generate_id,judge_image_path,get_mp3_duration
 from draftcontent import *
 import json 
 from dataclasses import asdict 
@@ -76,7 +76,8 @@ class DraftOperation:
         for i,track in enumerate(tracks):
             if track.type == type:
                 return i
-        return index
+        if index == -1:
+            raise IndexError(f"no {type.value} track")
     
     @classmethod
     def write2json(self,draft_content:DraftContent,json_path:Path):
@@ -174,14 +175,17 @@ class DraftOperation:
         return copy_draft
         
     @classmethod
-    def add_audio2track(self,draft_content:DraftContent,audio_path:Path):
+    def add_audio2track(self,draft_content:DraftContent,audio_path:Path,audio_local_material_id:str):
 
         copy_draft_content = deepcopy(draft_content)
         materials = copy_draft_content.materials
         audios = materials.audios
         audio_name = audio_path.name
-        audio = Audio(audio_name = audio_name,
-                      audio_path = audio_path) #segments[].material_id
+        audio_duration = get_mp3_duration(audio_path)
+        audio = Audio(name = audio_name,
+                      path = audio_path,
+                      duration=audio_duration,
+                      local_material_id=audio_local_material_id) #segments[].material_id
         audios.append(audio)
 
         beats = materials.beats
@@ -205,23 +209,27 @@ class DraftOperation:
             video_track = Track()
             audio_track = Track(type=TrackType.AUDIO)
             tracks.append(video_track)
+            tracks.append(audio_track)
         
         #find video track 
         audio_track_index = self.__get__track_index(tracks,TrackType.AUDIO)
-        audio_track = tracks[audio_track_index]
+        audio_track:Track = tracks[audio_track_index]
         segments = audio_track.segments
         segment = Segment(clip=None,
                           enable_adjust=False,
-                          enable_lut=False)
+                          enable_lut=False,
+                          uniform_scale=None,
+                          hdr_settings=None)
+        
         if len(segments) == 0:
-            source_timerange = TimeRange(start=0,duration=duration)
-            target_timerange = TimeRange(start=0,duration=duration)
+            source_timerange = TimeRange(start=0,duration=audio_duration)
+            target_timerange = TimeRange(start=0,duration=audio_duration)
             segment.source_timerange = source_timerange
             segment.target_timerange = target_timerange
         else:
             total_duration = self.__get_track_duration(audio_track)
-            source_timerange = TimeRange(start=0,duration=duration)
-            target_timerange = TimeRange(start=total_duration,duration=duration)
+            source_timerange = TimeRange(start=0,duration=audio_duration)
+            target_timerange = TimeRange(start=total_duration,duration=audio_duration)
             segment.source_timerange = source_timerange
             segment.target_timerange = target_timerange
 
@@ -236,4 +244,4 @@ class DraftOperation:
         #update duration
         self.__update_duration(draft_content=copy_draft_content)
 
-        return copy_draft
+        return copy_draft_content

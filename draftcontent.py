@@ -189,7 +189,7 @@ class Audio:
     app_id:int = 0
     category_id:str = ""
     category_name:str = "local"
-    check_flag: 1  
+    check_flag:int = 1
     duration:int = 0 #duration
     effect_id:str =  ""  
     formula_id:str = ""

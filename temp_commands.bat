@@ -1,3 +1,3 @@
-H:
-cd H:\PROJECT\JianYingProDraft\test
-conda activate Moody_Blues
+D:
+cd D:\PersonalProjects\JianYingProDraft\
+conda activate MoodyBlues

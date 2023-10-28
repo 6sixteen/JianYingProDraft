@@ -14,8 +14,8 @@
     "draft_enterprise_name": "",
     "enterprise_material": []
   },
-  "draft_fold_path": "D:/JianyingPro Drafts/empty_project-副本",
-  "draft_id": "29E19FF6-EA79-4b28-AB25-ACEEF8628271",
+  "draft_fold_path": "D:/JianyingPro Drafts/my_one_audio",
+  "draft_id": "D7406150-F220-4223-8E2E-C526EF0FD683",
   "draft_is_article_video_draft": false,
   "draft_is_from_deeplink": "false",
   "draft_materials": [
@@ -23,19 +23,19 @@
       "type": 0,
       "value": [
         {
-          "create_time": 1698386584,
-          "duration": 6624000,
+          "create_time": 1698480713,
+          "duration": 6455375,
           "extra_info": "speaker_test_sound.mp3",
-          "file_Path": "D:/JianyingPro Drafts/temp/speaker_test_sound.mp3",
+          "file_path": "D:\\PersonalProjects\\JianYingProDraft\\test\\temp\\speaker_test_sound.mp3",
           "height": 0,
-          "id": "cb968058-2da8-4065-90d9-a9e5583ea5df",
-          "import_time": 1698386603,
-          "import_time_ms": 1698386602910473,
+          "id": "DD54606B-BE26-4DEF-9D09-7F9F4EF8C401",
+          "import_time": 1698480713,
+          "import_time_ms": 1698480713233461,
           "item_source": 1,
           "md5": "",
           "metetype": "music",
           "roughcut_time_range": {
-            "duration": 6624000,
+            "duration": 6455375,
             "start": 0
           },
           "sub_time_range": {
@@ -44,29 +44,6 @@
           },
           "type": 0,
           "width": 0
-        },
-        {
-          "create_time": 1695204469,
-          "duration": 5000000,
-          "extra_info": "output_002.jpg",
-          "file_Path": "D:/PersonalProjects/Moody Blues Project old/Moody Blues/temp/imgs/test-generate-prompt/output_002.jpg",
-          "height": 1080,
-          "id": "edbaa3b4-421c-470d-a3f7-f814c195e039",
-          "import_time": 1698387226,
-          "import_time_ms": 1698387224580460,
-          "item_source": 1,
-          "md5": "",
-          "metetype": "photo",
-          "roughcut_time_range": {
-            "duration": -1,
-            "start": -1
-          },
-          "sub_time_range": {
-            "duration": -1,
-            "start": -1
-          },
-          "type": 0,
-          "width": 1440
         }
       ]
     },
@@ -96,16 +73,16 @@
     }
   ],
   "draft_materials_copied_info": [],
-  "draft_name": "empty_project-副本",
+  "draft_name": "my_one_audio",
   "draft_new_version": "",
   "draft_removable_storage_device": "D:",
-  "draft_root_path": "D:/JianyingPro Drafts",
+  "draft_root_path": "D:\\JianyingPro Drafts",
   "draft_segment_extra_info": [],
-  "draft_timeline_materials_size_": 280638,
+  "draft_timeline_materials_size_": 7592,
   "tm_draft_cloud_completed": "",
   "tm_draft_cloud_modified": 0,
-  "tm_draft_create": 1698386480128808,
-  "tm_draft_modified": 1698387238763093,
-  "tm_draft_removed": 7592,
-  "tm_duration": 6633333
+  "tm_draft_create": 1698228018949678,
+  "tm_draft_modified": 1698228045497140,
+  "tm_draft_removed": 0,
+  "tm_duration": 0
 }
