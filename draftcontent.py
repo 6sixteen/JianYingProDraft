@@ -7,6 +7,7 @@ from pathlib import Path
 from PIL import Image  
 from copy import deepcopy
 
+ttf_dir = Path(__file__).resolve().parent / "ttf"
 
 class RatioType(Enum):
     ORIGINAL = "original" # 原始比例
@@ -20,7 +21,8 @@ class ColorSpace(Enum):
 class TrackType(Enum):
     VIDEO = "video"
     AUDIO = "audio"
-
+    TEXT = "text"
+    
 @dataclass
 class CanvasConfig:
     height: int = field(default=1080)
@@ -241,6 +243,149 @@ class Beat:
     user_delete_ai_beats:Optional[str] = field(default=None)
 
 @dataclass
+class MaterialAnimation:
+    animations:list = field(default_factory=list)
+    id:str = field(default_factory=generate_id) #segements[].extra_material_refs append
+    type:str = "sticker_animation"
+
+@dataclass 
+class TextContent:
+    content:str = ""
+    color:str = "#FFFFFF" 
+    ttf_path:str = str(ttf_dir / "zh-hans.ttf")
+    size:float = 15
+
+    @property
+    def hex_to_rgb(self):
+        # 去掉可能存在的 '#' 符号
+        hex_color = self.color.lstrip('#')
+        # 将十六进制颜色码转换为整数
+        hex_int = int(hex_color, 16)
+        # 分别提取红、绿、蓝通道的值，并进行归一化
+        red = (hex_int >> 16) & 0xFF
+        green = (hex_int >> 8) & 0xFF
+        blue = hex_int & 0xFF
+        base = 255.0
+        red = red / base
+        green = green / base
+        blue = blue / base
+        # 构建归一化后的字符串
+        normalized_str = f"({red:.6f} {green:.6f} {blue:.6f} 1.000000)"
+        return normalized_str
+
+
+    @property
+    def text(self):
+        res = "<font id=\\\\ path=\\" + self.ttf_path + "\\>"+"<color="+self.hex_to_rgb+ "><size="+str(self.size)+">[" + self.content + "]</size></color></font>"
+        return res
+    #"<font id=\\ path=\D:/JianyingPro/4.6.1.10576/Resources/Font/SystemFont/zh-hans.ttf\><color=(1.000000 1.000000 1.000000 1.000000)><size=15.000000>[默认文本]</size></color></font>"
+
+@dataclass
+class CaptionTemplateInfo:
+    category_id:str = ""
+    category_name: str = ""
+    effect_id:str = "" 
+    resource_id:str = "" 
+    resource_name:str = "" 
+
+@dataclass
+class ComboInfo:
+    text_templates:list = field(default_factory=list)
+
+@dataclass
+class ShadowPoint:
+    x:float = 1.0182337649086284
+    y:float = -1.0182337649086284
+
+@dataclass
+class Words:
+    end_time:list = field(default_factory=list)
+    start_time:list = field(default_factory=list)
+    text:list = field(default_factory=list)
+@dataclass
+class Text:
+    add_type:int = field(default=0)
+    alignment:int = 1
+    background_alpha:int = 1
+    background_color:str = ""
+    background_height:float = 0.14
+    background_horizontal_offset:int = 0
+    background_round_radius:int = 0
+    background_style:int = 0
+    background_vertical_offset:int = 0
+    background_width:float = 0.14
+    bold_width:int = 0
+    border_alpha:int = 1
+    border_color:str = ""
+    border_width:float =  0.08
+    caption_template_info:CaptionTemplateInfo = field(default_factory=CaptionTemplateInfo)
+    check_flag:int = 7
+    combo_info:ComboInfo = field(default_factory=ComboInfo) 
+    content:str = "" #"<font id=\\ path=\D:/JianyingPro/4.6.1.10576/Resources/Font/SystemFont/zh-hans.ttf\><color=(1.000000 1.000000 1.000000 1.000000)><size=15.000000>[默认文本]</size></color></font>"
+    fixed_height:int = -1
+    fixed_width:int = -1
+    font_category_id:str = ""
+    font_category_name:str = "" 
+    font_id:str = ""
+    font_name:str = ""
+    font_path:str = "" #D:/JianyingPro/4.6.1.10576/Resources/Font/SystemFont/zh-hans.ttf
+    font_resource_id:str = ""
+    font_size:int = 15
+    font_source_platform:int = 0
+    font_team_id:str = ""
+    font_title:Optional[str] = "none"
+    font_url:str = ""
+    fonts:list = field(default_factory=list)
+    force_apply_line_max_width:bool = False
+    global_alpha:int = 1
+    group_id:str = "" 
+    has_shadow:bool =  False
+    id:str = field(default_factory=generate_id) #segements[].material_id
+    initial_scale:int = 1
+    is_rich_text:bool = False
+    italic_degree:int = 0
+    ktv_color:str = ""
+    language:str = ""
+    layer_weight:int = 1
+    letter_spacing:int = 0
+    line_feed:int = 1
+    line_spacing:float = 0.02
+    name:str = "" 
+    original_size:list = field(default_factory=list)
+    preset_category:str = ""
+    preset_category_id:str = ""
+    preset_has_set_alignment:bool =False 
+    preset_id:str = ""
+    preset_index:int = 0
+    preset_name:str = ""
+    recognize_type:int = 0
+    relevance_segment:list = field(default_factory=list)
+    shadow_alpha:float =  0.8
+    shadow_angle:int =  -45
+    shadow_color:str = "" 
+    shadow_distance:int = 8
+    shadow_point:ShadowPoint = field(default_factory=ShadowPoint)
+    shadow_smoothing:int = 1
+    shape_clip_x:bool = False
+    shape_clip_y:bool = False
+    style_name:str = ""
+    sub_type:int = 0
+    text_alpha:int =1
+    text_color:str = "#FFFFFF"
+    text_curve:Optional[str] = None
+    text_preset_resource_id:str = ""
+    text_size:int = 30
+    text_to_audio_ids:list = field(default_factory=list)
+    tts_auto_update:bool = False
+    type:str = "text"
+    typesetting:int = 0
+    underline:bool = False
+    underline_offset:float = 0.22
+    underline_width:float = 0.05
+    use_effect_default_color:bool = True
+    words:Words = field(default_factory=Words)
+
+@dataclass
 class Materials:
     audio_balances: List[Any] = field(default_factory=list)
     audio_effects: List[Any] = field(default_factory=list)
@@ -262,7 +407,7 @@ class Materials:
     loudnesses: List[Any] = field(default_factory=list)
     manual_deformations: List[Any] = field(default_factory=list)
     masks: List[Any] = field(default_factory=list)
-    material_animations: List[Any] = field(default_factory=list)
+    material_animations: List[MaterialAnimation] = field(default_factory=list)
     material_colors: List[Any] = field(default_factory=list)
     placeholders: List[Any] = field(default_factory=list)
     plugin_effects: List[Any] = field(default_factory=list)
@@ -275,7 +420,7 @@ class Materials:
     stickers: List[Any] = field(default_factory=list)
     tail_leaders: List[Any] = field(default_factory=list)
     text_templates: List[Any] = field(default_factory=list)
-    texts: List[Any] = field(default_factory=list)
+    texts: List[Text] = field(default_factory=list)
     transitions: List[Any] = field(default_factory=list)
     video_effects: List[Any] = field(default_factory=list)
     video_trackings: List[Any] = field(default_factory=list)

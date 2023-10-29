@@ -5,6 +5,8 @@ from draftcontent import *
 import json 
 from dataclasses import asdict 
 
+ttf_dir = Path(__file__).resolve().parent / "ttf"
+
 class DraftOperation:
 
     @classmethod
@@ -80,7 +82,7 @@ class DraftOperation:
             raise IndexError(f"no {type.value} track")
     
     @classmethod
-    def write2json(self,draft_content:DraftContent,json_path:Path):
+    def write2json(self,draft_content:DraftContent,json_path:Path,encoding:str="utf-8"):
         class EnumEncoder(json.JSONEncoder):
             def default(self, obj):
                 if isinstance(obj, Enum):
@@ -92,11 +94,11 @@ class DraftOperation:
     # 将字典转换为 JSON 格式  
         json_data = json.dumps(data,cls=EnumEncoder,indent=2) 
         # 将 JSON 数据写入文件  
-        with open(json_path, "w") as f:  
+        with open(json_path, "w",encoding=encoding) as f:  
             f.write(json_data)
 
     @classmethod
-    def add_image2track(self,draft_content:DraftContent, image_path:Path,duration:int=5000000,track_index:int=0):
+    def add_image2track(self,draft_content:DraftContent, image_path:Path,duration:int=5000000):
         """
         Add an image to a track.
         Args:
@@ -139,17 +141,15 @@ class DraftOperation:
 
         #track 
         tracks = copy_draft.tracks
-        if len(tracks) == 0 or track_index == len(tracks):
+        if len(tracks) == 0:
             #init track or add new track
             track = Track()
             tracks.append(track)
         
-        if track_index > len(tracks):
-            raise ValueError("track index out of range")
-        
+        video_track_index = self.__get__track_index(tracks,TrackType.AUDIO)
+        video_track:Track = tracks[video_track_index]
         #Each Image for Each Segment
-        track = tracks[track_index]
-        segments = track.segments
+        segments = video_track.segments
         segment = Segment()
         if len(segments) == 0:
             source_timerange = TimeRange(start=0,duration=duration)
@@ -239,6 +239,47 @@ class DraftOperation:
         extra_material_refs.append(sound_channel_mapping.id)
         extra_material_refs.append(vocal_separation.id)  
         segment.material_id = audio.id
+        segments.append(segment)
+
+        #update duration
+        self.__update_duration(draft_content=copy_draft_content)
+
+        return copy_draft_content
+    
+    @classmethod
+    def add_text2track(self,draft_content:DraftContent,text_content:str,text_duration:int,text_color:str="#FFFFFF",text_size:float=15,ttf:str="zh-hans.ttf"):
+
+        copy_draft_content = deepcopy(draft_content)
+        materials = copy_draft_content.materials
+        material_animations = materials.material_animations
+        material_animation = MaterialAnimation() #append
+        material_animations.append(material_animation)
+        texts = materials.texts
+        ttf_path = ttf_dir / ttf
+        text_content_obj = TextContent(content=text_content,color=text_color,size=text_size,ttf_path=str(ttf_path))
+        text = Text(content=text_content_obj.text,
+                    font_path=ttf_path)
+        texts.append(text)
+        tracks = copy_draft_content.tracks
+        if len(tracks) == 0:
+            video_track = Track()
+            text_track = Track(type=TrackType.TEXT)
+            tracks.append(video_track)
+            tracks.append(text_track)
+        text_track_index = self.__get__track_index(tracks,TrackType.TEXT)
+        text_track:Track = tracks[text_track_index]
+        segments = text_track.segments
+        segment = Segment(clip=Clip(),
+                          enable_adjust=False,
+                          enable_lut=False,
+                          hdr_settings=None)
+        segment.source_timerange = None
+        start_duration = self.__get_track_duration(text_track)
+        target_timerange = TimeRange(start=start_duration,duration=text_duration)
+        segment.target_timerange = target_timerange
+        extra_material_refs = segment.extra_material_refs
+        extra_material_refs.append(material_animation.id)
+        segment.material_id = text.id
         segments.append(segment)
 
         #update duration

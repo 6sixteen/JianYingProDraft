@@ -39,8 +39,18 @@ def test_add_audio2track():
     draft_content = DraftOperation.add_audio2track(draft_content, audio_path)
     json_path = temp_path / "my_one_audio_draft_content.json"
     DraftOperation.write2json(draft_content, json_path)
+
+def test_add_text2track():
+    draft_content = DraftContent()
+    text = "默认文本"
+    duration = 5000000
+    draft_content = DraftOperation.add_text2track(draft_content, text, duration)
+    json_path = temp_path / "my_one_text_draft_content.json"
+    DraftOperation.write2json(draft_content, json_path)
+
 if __name__ == "__main__":
     # test_dict()
     # test_add_first_image2track()
     # test_add_two_image2track()
-    test_add_audio2track()
+    # test_add_audio2track()
+    test_add_text2track()
